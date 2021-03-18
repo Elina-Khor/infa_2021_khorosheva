@@ -29,7 +29,7 @@ screen.fill(LIGHT_GRAY)
 line_width = 1
 
 
-def draw_face():
+def draw_face(*face_size):
     """
     Draw face in center of screen.
     
@@ -38,16 +38,11 @@ def draw_face():
     None.
     
     """
-    ellipse_size = [screen_size[0] / 4,
-                    screen_size[1] / 4,
-                    screen_size[0] / 2,
-                    screen_size[1] / 2,
-                    ]
-    ellipse(screen, YELLOW, ellipse_size)
-    ellipse(screen, BLACK, ellipse_size, line_width)
+    ellipse(screen, YELLOW, face_size)
+    ellipse(screen, BLACK, face_size, line_width)
 
 
-def draw_eye(x: int, y: int, height: int, width: int):
+def draw_eye(*eye_size):
     """
     Draw an eye at the rectangle what begin in point with coordinates x, y
     and have height and width matching parameters height and width.
@@ -57,17 +52,39 @@ def draw_eye(x: int, y: int, height: int, width: int):
     None.
     
     """
-    
-    pass
+    ellipse(screen, RED, eye_size)
+    ellipse(screen, BLACK, eye_size, line_width)
 
 
 def draw_angry_face():
     """
     Draw angry face in center of screen, return None
     """
-    draw_face()
-    draw_eye()
-    draw_eye()
+    min_size = min(screen_size)
+    right_eye_diam = min_size * 5 // 64
+    left_eye_diam = min_size * 3 // 32 + 2
+    max_diam = max(right_eye_diam, left_eye_diam)
+    eye_center = min_size // 16
+    
+    face = [min_size // 4,
+            min_size // 4,
+            min_size // 2,
+            min_size // 2,
+            ]
+    left = [face[0] + eye_center,
+            2 * face[1] - max_diam,
+            left_eye_diam,
+            left_eye_diam,
+            ]
+    right = [3 * face[0] - max_diam - eye_center,
+             2 * face[1] - max_diam,
+             right_eye_diam,
+             right_eye_diam,
+             ]
+    
+    draw_face(face)
+    draw_eye(left)
+    draw_eye(right)
 
 
 draw_angry_face()
